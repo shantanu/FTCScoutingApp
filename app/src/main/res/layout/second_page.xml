@@ -18,52 +18,52 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
         android:editable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="wrap_content"
+        android:text="Pick Teams"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/text"
+        android:id="@+id/teamPicker">
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-        />
+        <Spinner
+            android:id="@+id/spinner3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Spinner
+            android:id="@+id/spinner4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="77dp"
-        android:layout_marginStart="77dp"
-        android:layout_toEndOf="@+id/text"
-        android:layout_toRightOf="@+id/text" />
 
-    <Spinner
-        android:id="@+id/spinner3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner2"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/spinner2"
-        android:layout_marginLeft="84dp"
-        android:layout_marginStart="84dp" />
 
-    <Spinner
-        android:id="@+id/spinner4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner3"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/spinner3"
-        android:layout_marginLeft="89dp"
-        android:layout_marginStart="89dp" />
+
+
+
+
 
     <EditText
         android:id="@+id/matchnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
+        android:layout_below="@+id/teamPicker"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="number" />

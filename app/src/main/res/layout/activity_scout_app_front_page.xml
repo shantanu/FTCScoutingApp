@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="4"
+        android:hint="#"
         android:id="@+id/TeamEnterEditText"
         android:layout_gravity="center"/>
 
@@ -48,7 +49,8 @@
         android:layout_marginTop="12dp"/>
 
     <Button
-        android:layout_width="fill_parent"
+        android:layout_width="144dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:text="Done"
         android:id="@+id/done"

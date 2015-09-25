@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JsPromptResult;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,11 +29,15 @@ public class MainActivity extends Activity {
     Boolean loaded = false;
     String[] teams = new String[5];
     String[] teams2 = new String[5];
+    String[] teams3 = new String[5];
+    String[] secpageteams = new String[4];
     String[] turtlestwo = new String[5];
     String[] turtles = new String[5];
+    String[] secondarray = new String[4];
     String[] newstring = new String[5];
     JSONArray teamstwo = new JSONArray();
-    String teamstring, matchnumberq,teamnumber1s;
+    JSONArray matchteams = new JSONArray();
+    String teamstring, matchnumberq,teamnumber1s, test;
     TextView text;
     ParseObject teamquery,matchinfo;
     String list;
@@ -125,39 +130,60 @@ public class MainActivity extends Activity {
 
 
 
-
-                teamnumber1 = (EditText) findViewById(R.id.Team1AutoComplete);
-                teamnumber1s = teamnumber1.getText().toString();
-
-
-                //get case of matchnumber which querys info from parse db
-
-                for (int i = 0; i < 4; i++){
-                    matchinfo.add("Teams", teamsarray[i]);
-                }
-                matchinfo.saveInBackground();
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("MatchInformation");
-                query.whereEqualTo("MatchNumber", matchnumber.getText().toString());
-                query.findInBackground(new FindCallback<ParseObject>() {
-
-                    public void done(List<ParseObject> list, ParseException e) {
-                        ParseObject p = list.get(0);
-                        String teamnumber1s = p.getString("MatchNumber");
-                        Log.i("qqq", teamnumber1s);
-                    }
-                });
-
-                teamnumber1.setText(teamnumber1s);
-
-
                 Button confirm = (Button) findViewById(R.id.confirm);
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+                        teamnumber1 = (EditText) findViewById(R.id.Team1AutoComplete);
+                        teamnumber1s = teamnumber1.getText().toString();
 
 
-                        setContentView(R.layout.autonomous_input_layout);
+                        for (int i = 0; i < 4; i++) {
+                            matchinfo.add("Teams", teams[i]);
+                        }
+                        matchinfo.put("MatchNumber", "1");
+                        matchinfo.saveInBackground();
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("MatchInformation");
+                        query.whereEqualTo("MatchNumber", "1");
+                        query.findInBackground(new FindCallback<ParseObject>() {
+
+                            public void done(List<ParseObject> l, ParseException e) {
+
+                                if (e == null) {
+                                    Log.i("qqq", "this is running1");
+                                    Log.i("qqq", String.valueOf(l.size()));
+                                    for (int i = 0; i <l.size();i++){
+                                        // use dealsObject.get('columnName') to access the properties of the Deals object.
+                                        Log.i("qqq", "this is running2");
+                                       matchteams = (l.get(i).getJSONArray("Teams"));
+                                        test = matchteams.toString();
+
+                                        secondarray = test.split(",");
+                                        Log.i("qqq", "this is running3");
+                                        for (int d = 0; d < 5; i++) {
+                                            teams3[d] = secondarray[d].replaceAll("[^\\d.]", "");
+                                            Log.i("qqq", "this is running4");
+                                        }
+
+                                    }
+
+                                } else {
+                                    Log.d("Error", e.getMessage());
+                                }
+
+                            }
+                        });
+
+
+                            }
+                        });
+
+                        //teamnumber1.setText(teamnumber1s);
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        // setContentView(R.layout.autonomous_input_layout);
 
 
                         TextView team1 = (TextView) findViewById(R.id.T1TXT);
@@ -165,14 +191,14 @@ public class MainActivity extends Activity {
                         TextView team3 = (TextView) findViewById(R.id.T3TXT);
                         TextView team4 = (TextView) findViewById(R.id.T4TXT);
 
+                        // replace with whatever is queried from match info
+                       // team1.setText(teamsarray[0]);
+                       // team2.setText(teamsarray[1]);
+                       // team3.setText(teamsarray[2]);
+                       // team4.setText(teamsarray[3]);
 
-                        team1.setText(teamsarray[0]);
-                        team2.setText(teamsarray[1]);
-                        team3.setText(teamsarray[2]);
-                        team4.setText(teamsarray[3]);
-
-
-                        Button back = (Button) findViewById(R.id.back);
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        /*Button back = (Button) findViewById(R.id.back);
                         back.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -189,20 +215,18 @@ public class MainActivity extends Activity {
                                 //setContentView(R.layout.activity_main4);
 
 
-
-
                             }
                         });
-
-
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////
                     }
                 });
             }
 
-        });
-    }
+        }
 
 
 
 
-}
+
+

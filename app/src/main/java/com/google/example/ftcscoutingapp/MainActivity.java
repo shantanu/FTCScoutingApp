@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    EditText teamnumber, matchnumber;
+    EditText teamnumber, matchnumber, teamnumber1 ;
     Boolean loaded = false;
     String[] teams = new String[5];
     String[] teams2 = new String[5];
@@ -31,7 +32,7 @@ public class MainActivity extends Activity {
     String[] turtles = new String[5];
     String[] newstring = new String[5];
     JSONArray teamstwo = new JSONArray();
-    String teamstring, matchnumberq;
+    String teamstring, matchnumberq,teamnumber1s;
     TextView text;
     ParseObject teamquery,matchinfo;
     String list;
@@ -61,20 +62,15 @@ public class MainActivity extends Activity {
 
             public void onClick(View v) {
                 teamnumber = (EditText) findViewById(R.id.TeamEnterEditText);
-
                 teamstring = teamnumber.getText().toString();
                 teams[a] = teamstring;
-                //   teams2[a] = teamstring;
                 teamnumber.setText("");
-                //  teamquery.put("string", "temstring");
                 teamquery.add("team", teams[a]);
-
                 teamquery.saveInBackground();
                 a++;
                 if (a > 4) {
                     teamnumber.setText("Max");
                 }
-
             }
         });
 
@@ -124,100 +120,41 @@ public class MainActivity extends Activity {
 
                 setContentView(R.layout.second_page);
 
-
-
-
                 text = (TextView) findViewById(R.id.text);
                 matchnumber = (EditText) findViewById(R.id.matchnumber);
-                spinner = (Spinner) findViewById(R.id.spinner);
-                spinner2 = (Spinner) findViewById(R.id.spinner2);
-                spinner3 = (Spinner) findViewById(R.id.spinner3);
-                spinner4 = (Spinner) findViewById(R.id.spinner4);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, teams);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                        Log.i("qqq1", (String) parent.getItemAtPosition(position));
-                        turtles[0] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq2", turtles[0]);
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                spinner2.setAdapter(adapter);
-                spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                        Log.i("qqq7", (String) parent.getItemAtPosition(position));
-                        turtles[1] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq4", turtles[1]);
-                    }
+                teamnumber1 = (EditText) findViewById(R.id.Team1AutoComplete);
+                teamnumber1s = teamnumber1.getText().toString();
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+
+                //get case of matchnumber which querys info from parse db
+
+                for (int i = 0; i < 4; i++){
+                    matchinfo.add("Teams", teamsarray[i]);
+                }
+                matchinfo.saveInBackground();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("MatchInformation");
+                query.whereEqualTo("MatchNumber", matchnumber.getText().toString());
+                query.findInBackground(new FindCallback<ParseObject>() {
+
+                    public void done(List<ParseObject> list, ParseException e) {
+                        ParseObject p = list.get(0);
+                        String teamnumber1s = p.getString("MatchNumber");
+                        Log.i("qqq", teamnumber1s);
                     }
                 });
-                spinner3.setAdapter(adapter);
-                spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                        Log.i("qqq5", (String) parent.getItemAtPosition(position));
-                        turtles[2] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq6", turtles[2]);
-                    }
+                teamnumber1.setText(teamnumber1s);
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                spinner4.setAdapter(adapter);
-                spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        Log.i("qqq7", (String) parent.getItemAtPosition(position));
-                        turtles[3] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq8", turtles[3]);
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
 
                 Button confirm = (Button) findViewById(R.id.confirm);
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //replace with loop when not lazy - anthony stop being dumb
-                        teamsarray = new String[4];
-                        for (int i = 0; i < teamsarray.length; i++) {
-                            teamsarray[i] = turtles[i];
-                        }
-                        /*teamsarray[0] = turtles[0];
-                        teamsarray[1] = turtles[1];
-                        teamsarray[2] = turtles[2];
-                        teamsarray[3] = turtles[3];*/
-                        matchnumberq = matchnumber.getText().toString();
-                        matchinfo.put("MatchNumber", matchnumberq);
-                        for (int i = 0; i < 4; i++){
-                            matchinfo.add("Teams", teamsarray[i]);
-                        }
-                        /*matchinfo.add("Teams", teamsarray[0]);
-                        matchinfo.add("Teams", teamsarray[1]);
-                        matchinfo.add("Teams", teamsarray[2]);
-                        matchinfo.add("Teams", teamsarray[3]);*/
-                        matchinfo.saveInBackground();
-                        matchnumber.setText("");
+
 
 
                         setContentView(R.layout.autonomous_input_layout);
@@ -227,6 +164,8 @@ public class MainActivity extends Activity {
                         TextView team2 = (TextView) findViewById(R.id.T2TXT);
                         TextView team3 = (TextView) findViewById(R.id.T3TXT);
                         TextView team4 = (TextView) findViewById(R.id.T4TXT);
+
+
                         team1.setText(teamsarray[0]);
                         team2.setText(teamsarray[1]);
                         team3.setText(teamsarray[2]);

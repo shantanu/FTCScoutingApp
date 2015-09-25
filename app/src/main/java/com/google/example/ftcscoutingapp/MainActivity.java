@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JsPromptResult;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,15 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    EditText teamnumber, matchnumber;
+    EditText teamnumber, matchnumber, teamnumber1,teamnumber2,teamnumber3,teamnumber4 ;
     Boolean loaded = false;
     String[] teams = new String[5];
     String[] teams2 = new String[5];
+    String[] teams3 = new String[5];
+    String[] secpageteams = new String[4];
     String[] turtlestwo = new String[5];
     String[] turtles = new String[5];
+    String[] secondarray = new String[4];
     String[] newstring = new String[5];
     JSONArray teamstwo = new JSONArray();
-    String teamstring, matchnumberq;
+    JSONArray matchteams = new JSONArray();
+    String teamstring, matchnumberq,teamnumber1s, test;
     TextView text;
     ParseObject teamquery,matchinfo;
     String list;
@@ -61,20 +67,15 @@ public class MainActivity extends Activity {
 
             public void onClick(View v) {
                 teamnumber = (EditText) findViewById(R.id.TeamEnterEditText);
-
                 teamstring = teamnumber.getText().toString();
                 teams[a] = teamstring;
-                //   teams2[a] = teamstring;
                 teamnumber.setText("");
-                //  teamquery.put("string", "temstring");
                 teamquery.add("team", teams[a]);
-
                 teamquery.saveInBackground();
                 a++;
                 if (a > 4) {
                     teamnumber.setText("Max");
                 }
-
             }
         });
 
@@ -124,116 +125,96 @@ public class MainActivity extends Activity {
 
                 setContentView(R.layout.second_page);
 
-
-
-
                 text = (TextView) findViewById(R.id.text);
                 matchnumber = (EditText) findViewById(R.id.matchnumber);
-                spinner = (Spinner) findViewById(R.id.spinner);
-                spinner2 = (Spinner) findViewById(R.id.spinner2);
-                spinner3 = (Spinner) findViewById(R.id.spinner3);
-                spinner4 = (Spinner) findViewById(R.id.spinner4);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, teams);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                        Log.i("qqq1", (String) parent.getItemAtPosition(position));
-                        turtles[0] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq2", turtles[0]);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                spinner2.setAdapter(adapter);
-                spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        Log.i("qqq7", (String) parent.getItemAtPosition(position));
-                        turtles[1] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq4", turtles[1]);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                spinner3.setAdapter(adapter);
-                spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        Log.i("qqq5", (String) parent.getItemAtPosition(position));
-                        turtles[2] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq6", turtles[2]);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                spinner4.setAdapter(adapter);
-                spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        Log.i("qqq7", (String) parent.getItemAtPosition(position));
-                        turtles[3] = (String) parent.getItemAtPosition(position);
-                        Log.i("qqq8", turtles[3]);
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
 
                 Button confirm = (Button) findViewById(R.id.confirm);
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //replace with loop when not lazy - anthony stop being dumb
-                        teamsarray = new String[4];
-                        for (int i = 0; i < teamsarray.length; i++) {
-                            teamsarray[i] = turtles[i];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+                        teamnumber1 = (EditText) findViewById(R.id.Team1AutoComplete);
+                        teamnumber2 = (EditText) findViewById(R.id.Team2AutoComplete);
+                        teamnumber3 = (EditText) findViewById(R.id.Team3AutoComplete);
+                        teamnumber4 = (EditText) findViewById(R.id.Team4AutoComplete);
+                        teamnumber1s = teamnumber1.getText().toString();
+
+
+                        for (int i = 0; i < 4; i++) {
+                            matchinfo.add("Teams", teams[i]);
                         }
-                        /*teamsarray[0] = turtles[0];
-                        teamsarray[1] = turtles[1];
-                        teamsarray[2] = turtles[2];
-                        teamsarray[3] = turtles[3];*/
-                        matchnumberq = matchnumber.getText().toString();
-                        matchinfo.put("MatchNumber", matchnumberq);
-                        for (int i = 0; i < 4; i++){
-                            matchinfo.add("Teams", teamsarray[i]);
-                        }
-                        /*matchinfo.add("Teams", teamsarray[0]);
-                        matchinfo.add("Teams", teamsarray[1]);
-                        matchinfo.add("Teams", teamsarray[2]);
-                        matchinfo.add("Teams", teamsarray[3]);*/
+                       // matchinfo.put("MatchNumber", "1");
+
                         matchinfo.saveInBackground();
-                        matchnumber.setText("");
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Matchinformation");
+                        query.whereEqualTo("MatchNumber", matchnumber.getText().toString());
+                        query.findInBackground(new FindCallback<ParseObject>() {
+
+                            public void done(List<ParseObject> l, ParseException e) {
+
+                                if (e == null) {
+                                   /* Log.i("qqq", "working1");
+                                    for (int i = 0; i < l.size(); i++) {
+                                        teamnumber1.setText(l.get(i).getString("test"));
+                                        Log.i("qqq", "working2");
+                                    }
+                                    // teamnumber1.setText(l.get(0).getString("test"));
+
+                                    Log.i("qqq", "working3");*/
+                                    Log.i("qqq", "this is running1");
+                                    Log.i("qqq", String.valueOf(l.size()));
+                                    for (int i = 0; i <l.size();i++){
+                                        // use dealsObject.get('columnName') to access the properties of the Deals object.
+                                        Log.i("qqq", "this is running2");
+                                        matchteams = (l.get(i).getJSONArray("Teams"));
+                                        test = matchteams.toString();
+
+                                        secondarray = test.split(",");
+                                        Log.i("qqq", "this is running3");
+                                        for (int d = 0; d < 4; d++) {
+                                            teams3[d] = secondarray[d].replaceAll("[^\\d.]", "");
+
+                                        }
+                                        Log.i("qqq", teams3[0]);
+                                        teamnumber1.setText(teams[0]);
+                                        teamnumber2.setText(teams[1]);
+                                        teamnumber3.setText(teams[2]);
+                                        teamnumber4.setText(teams[3]);
+                                    }
+
+                                } else {
+                                    Log.d("Error", e.getMessage());
+                                }
+
+                            }
+                        });
 
 
-                        setContentView(R.layout.autonomous_input_layout);
+                            }
+                        });
+
+                        //teamnumber1.setText(teamnumber1s);
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        // setContentView(R.layout.autonomous_input_layout);
 
 
                         TextView team1 = (TextView) findViewById(R.id.T1TXT);
                         TextView team2 = (TextView) findViewById(R.id.T2TXT);
                         TextView team3 = (TextView) findViewById(R.id.T3TXT);
                         TextView team4 = (TextView) findViewById(R.id.T4TXT);
-                        team1.setText(teamsarray[0]);
-                        team2.setText(teamsarray[1]);
-                        team3.setText(teamsarray[2]);
-                        team4.setText(teamsarray[3]);
 
+                        // replace with whatever is queried from match info
+                       // team1.setText(teamsarray[0]);
+                       // team2.setText(teamsarray[1]);
+                       // team3.setText(teamsarray[2]);
+                       // team4.setText(teamsarray[3]);
 
-                        Button back = (Button) findViewById(R.id.back);
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        /*Button back = (Button) findViewById(R.id.back);
                         back.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -250,20 +231,18 @@ public class MainActivity extends Activity {
                                 //setContentView(R.layout.activity_main4);
 
 
-
-
                             }
                         });
-
-
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////
                     }
                 });
             }
 
-        });
-    }
+        }
 
 
 
 
-}
+
+

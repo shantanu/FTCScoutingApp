@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    EditText teamnumber, matchnumber, teamnumber1,teamnumber2,teamnumber3,teamnumber4 ;
+    EditText teamnumber, matchnumber, teamnumber1, teamnumber2, teamnumber3, teamnumber4;
     Boolean loaded = false;
     String[] teams = new String[5];
     String[] teams2 = new String[5];
@@ -34,12 +34,16 @@ public class MainActivity extends Activity {
     String[] turtlestwo = new String[5];
     String[] turtles = new String[5];
     String[] secondarray = new String[4];
+    String[] teamone = new String[3];
+    String[] teamtwo = new String[3];
+    String[] teamthree = new String[3];
+    String[] teamfour = new String[3];
     String[] newstring = new String[5];
     JSONArray teamstwo = new JSONArray();
     JSONArray matchteams = new JSONArray();
-    String teamstring, matchnumberq,teamnumber1s, test;
+    String teamstring, matchnumberq, teamnumber1s, test;
     TextView text;
-    ParseObject teamquery,matchinfo;
+    ParseObject teamquery, matchinfo, teamstats;
     String list;
     List<Object> al = new ArrayList<>();
 
@@ -47,6 +51,7 @@ public class MainActivity extends Activity {
     private Spinner spinner, spinner2, spinner3, spinner4;
     String[] teamsarray;
     int b;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +65,7 @@ public class MainActivity extends Activity {
         Button enterteam = (Button) findViewById(R.id.EnterTeamButton);
         teamquery = new ParseObject("TestObject3");
         matchinfo = new ParseObject("Matchinformation");
-
+        teamstats = new ParseObject("TeamStats");
         enterteam.setOnClickListener(new View.OnClickListener() {
 
             int a = 0;
@@ -129,7 +134,6 @@ public class MainActivity extends Activity {
                 matchnumber = (EditText) findViewById(R.id.matchnumber);
 
 
-
                 Button confirm = (Button) findViewById(R.id.confirm);
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -146,7 +150,7 @@ public class MainActivity extends Activity {
                         for (int i = 0; i < 4; i++) {
                             matchinfo.add("Teams", teams[i]);
                         }
-                       // matchinfo.put("MatchNumber", "1");
+                        // matchinfo.put("MatchNumber", "1");
 
                         matchinfo.saveInBackground();
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Matchinformation");
@@ -166,7 +170,7 @@ public class MainActivity extends Activity {
                                     Log.i("qqq", "working3");*/
                                     Log.i("qqq", "this is running1");
                                     Log.i("qqq", String.valueOf(l.size()));
-                                    for (int i = 0; i <l.size();i++){
+                                    for (int i = 0; i < l.size(); i++) {
                                         // use dealsObject.get('columnName') to access the properties of the Deals object.
                                         Log.i("qqq", "this is running2");
                                         matchteams = (l.get(i).getJSONArray("Teams"));
@@ -193,13 +197,17 @@ public class MainActivity extends Activity {
                         });
 
 
-                            }
-                        });
+                    }
+                });
 
-                        //teamnumber1.setText(teamnumber1s);
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+                Button nextpage = (Button) findViewById(R.id.secondnext);
+                nextpage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                        // setContentView(R.layout.autonomous_input_layout);
+                        setContentView(R.layout.autonomous_input_layout);
 
 
                         TextView team1 = (TextView) findViewById(R.id.T1TXT);
@@ -208,13 +216,11 @@ public class MainActivity extends Activity {
                         TextView team4 = (TextView) findViewById(R.id.T4TXT);
 
                         // replace with whatever is queried from match info
-                       // team1.setText(teamsarray[0]);
-                       // team2.setText(teamsarray[1]);
-                       // team3.setText(teamsarray[2]);
-                       // team4.setText(teamsarray[3]);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        /*Button back = (Button) findViewById(R.id.back);
+                         team1.setText(teams[0]);
+                         team2.setText(teams[1]);
+                         team3.setText(teams[2]);
+                         team4.setText(teams[3]);
+                        Button back = (Button) findViewById(R.id.back);
                         back.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -228,18 +234,38 @@ public class MainActivity extends Activity {
                             @Override
                             public void onClick(View v) {
                                 //TODO
-                                //setContentView(R.layout.activity_main4);
+                                EditText T1RB, T1CL, T1PK,T2RB, T2CL, T2PK,T3RB, T3CL, T3PK, T4RB, T4CL, T4PK;
+                                T1RB = (EditText)findViewById(R.id.T1RB);
+                                T2RB = (EditText)findViewById(R.id.T2RB);
+                                T3RB = (EditText)findViewById(R.id.T3RB);
+                                T4RB = (EditText)findViewById(R.id.T4RB);
+                                T1CL = (EditText)findViewById(R.id.T1CL);
+                                T2CL = (EditText)findViewById(R.id.T2CL);
+                                T3CL = (EditText)findViewById(R.id.T3CL);
+                                T4CL = (EditText)findViewById(R.id.T4CL);
+                                T1PK = (EditText)findViewById(R.id.T1PK);
+                                T2PK = (EditText)findViewById(R.id.T2PK);
+                                T3PK = (EditText)findViewById(R.id.T3PK);
+                                T4PK = (EditText)findViewById(R.id.T4PK);
+
+                                teamone[0] = T1RB.getText().toString();
+                                teamone[1] = T1RB.getText().toString();
+                                teamone[2] = T1RB.getText().toString();
+
+
+
+
+                               //setContentView(R.layout.activity_main4);
 
 
                             }
                         });
-*/
-//////////////////////////////////////////////////////////////////////////////////////////////////////
                     }
                 });
             }
-
-        }
+        });
+    }
+}
 
 
 

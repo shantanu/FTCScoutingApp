@@ -144,29 +144,39 @@ public class MainActivity extends Activity {
                             matchinfo.add("Teams", teams[i]);
                         }
                         matchinfo.put("MatchNumber", "1");
+                        matchinfo.put("test", "test");
                         matchinfo.saveInBackground();
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("MatchInformation");
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Matchinformation");
                         query.whereEqualTo("MatchNumber", "1");
                         query.findInBackground(new FindCallback<ParseObject>() {
 
                             public void done(List<ParseObject> l, ParseException e) {
 
                                 if (e == null) {
+                                   /* Log.i("qqq", "working1");
+                                    for (int i = 0; i < l.size(); i++) {
+                                        teamnumber1.setText(l.get(i).getString("test"));
+                                        Log.i("qqq", "working2");
+                                    }
+                                    // teamnumber1.setText(l.get(0).getString("test"));
+
+                                    Log.i("qqq", "working3");*/
                                     Log.i("qqq", "this is running1");
                                     Log.i("qqq", String.valueOf(l.size()));
                                     for (int i = 0; i <l.size();i++){
                                         // use dealsObject.get('columnName') to access the properties of the Deals object.
                                         Log.i("qqq", "this is running2");
-                                       matchteams = (l.get(i).getJSONArray("Teams"));
+                                        matchteams = (l.get(i).getJSONArray("Teams"));
                                         test = matchteams.toString();
 
                                         secondarray = test.split(",");
                                         Log.i("qqq", "this is running3");
-                                        for (int d = 0; d < 5; i++) {
+                                        for (int d = 0; d < 4; d++) {
                                             teams3[d] = secondarray[d].replaceAll("[^\\d.]", "");
-                                            Log.i("qqq", "this is running4");
-                                        }
 
+                                        }
+                                        Log.i("qqq", teams3[0]);
+                                        teamnumber1.setText(teams[0]);
                                     }
 
                                 } else {

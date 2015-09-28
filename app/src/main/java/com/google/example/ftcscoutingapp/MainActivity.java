@@ -43,14 +43,10 @@ public class MainActivity extends Activity {
     JSONArray matchteams = new JSONArray();
     String teamstring, matchnumberq, teamnumber1s, test;
     TextView text;
-    ParseObject teamquery, matchinfo, teamstats;
+    ParseObject teamquery, matchinfo, teamstats, teamstats2, teamstats3, teamstats4;
     String list;
-    List<Object> al = new ArrayList<>();
-
     String[] stringarray = new String[5];
-    private Spinner spinner, spinner2, spinner3, spinner4;
-    String[] teamsarray;
-    int b;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +62,9 @@ public class MainActivity extends Activity {
         teamquery = new ParseObject("TestObject3");
         matchinfo = new ParseObject("Matchinformation");
         teamstats = new ParseObject("TeamStats");
+        teamstats2 = new ParseObject("TeamStats");
+        teamstats3 = new ParseObject("TeamStats");
+        teamstats4 = new ParseObject("TeamStats");
         enterteam.setOnClickListener(new View.OnClickListener() {
 
             int a = 0;
@@ -125,7 +124,6 @@ public class MainActivity extends Activity {
         Button done = (Button) findViewById(R.id.done);
 
         done.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View v) {
 
                 setContentView(R.layout.second_page);
@@ -134,7 +132,7 @@ public class MainActivity extends Activity {
                 matchnumber = (EditText) findViewById(R.id.matchnumber);
 
 
-                Button confirm = (Button) findViewById(R.id.confirm);
+                final Button confirm = (Button) findViewById(R.id.confirm);
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -210,16 +208,16 @@ public class MainActivity extends Activity {
                         setContentView(R.layout.autonomous_input_layout);
 
 
-                        TextView team1 = (TextView) findViewById(R.id.T1TXT);
-                        TextView team2 = (TextView) findViewById(R.id.T2TXT);
-                        TextView team3 = (TextView) findViewById(R.id.T3TXT);
-                        TextView team4 = (TextView) findViewById(R.id.T4TXT);
+                        final TextView team1 = (TextView) findViewById(R.id.T1TXT);
+                        final TextView team2 = (TextView) findViewById(R.id.T2TXT);
+                        final TextView team3 = (TextView) findViewById(R.id.T3TXT);
+                        final TextView team4 = (TextView) findViewById(R.id.T4TXT);
 
                         // replace with whatever is queried from match info
-                         team1.setText(teams[0]);
-                         team2.setText(teams[1]);
-                         team3.setText(teams[2]);
-                         team4.setText(teams[3]);
+                        team1.setText(teams[0]);
+                        team2.setText(teams[1]);
+                        team3.setText(teams[2]);
+                        team4.setText(teams[3]);
                         Button back = (Button) findViewById(R.id.back);
                         back.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -234,32 +232,133 @@ public class MainActivity extends Activity {
                             @Override
                             public void onClick(View v) {
                                 //TODO
-                                EditText T1RB, T1CL, T1PK,T2RB, T2CL, T2PK,T3RB, T3CL, T3PK, T4RB, T4CL, T4PK;
-                                T1RB = (EditText)findViewById(R.id.T1RB);
-                                T2RB = (EditText)findViewById(R.id.T2RB);
-                                T3RB = (EditText)findViewById(R.id.T3RB);
-                                T4RB = (EditText)findViewById(R.id.T4RB);
-                                T1CL = (EditText)findViewById(R.id.T1CL);
-                                T2CL = (EditText)findViewById(R.id.T2CL);
-                                T3CL = (EditText)findViewById(R.id.T3CL);
-                                T4CL = (EditText)findViewById(R.id.T4CL);
-                                T1PK = (EditText)findViewById(R.id.T1PK);
-                                T2PK = (EditText)findViewById(R.id.T2PK);
-                                T3PK = (EditText)findViewById(R.id.T3PK);
-                                T4PK = (EditText)findViewById(R.id.T4PK);
-
+                                EditText T1RB, T1CL, T1PK, T2RB, T2CL, T2PK, T3RB, T3CL, T3PK, T4RB, T4CL, T4PK;
+                                T1RB = (EditText) findViewById(R.id.T1Beacon);
+                                T2RB = (EditText) findViewById(R.id.T2Beacon);
+                                T3RB = (EditText) findViewById(R.id.T3Beacon);
+                                T4RB = (EditText) findViewById(R.id.T4Beacon);
+                                T1CL = (EditText) findViewById(R.id.T1ClimbersAuto);
+                                T2CL = (EditText) findViewById(R.id.T2ClimbersAuto);
+                                T3CL = (EditText) findViewById(R.id.T3ClimbersAuto);
+                                T4CL = (EditText) findViewById(R.id.T4ClimbersAuto);
+                                T1PK = (EditText) findViewById(R.id.T1ParkingAuto);
+                                T2PK = (EditText) findViewById(R.id.T2ParkingAuto);
+                                T3PK = (EditText) findViewById(R.id.T3ParkingAuto);
+                                T4PK = (EditText) findViewById(R.id.T4ParkingAuto);
+                                String team1s = team1.getText().toString();
+                                String team2s = team2.getText().toString();
+                                String team3s = team3.getText().toString();
+                                String team4s = team4.getText().toString();
                                 teamone[0] = T1RB.getText().toString();
-                                teamone[1] = T1RB.getText().toString();
-                                teamone[2] = T1RB.getText().toString();
+                                teamone[1] = T1CL.getText().toString();
+                                teamone[2] = T1PK.getText().toString();
+                                teamtwo[0] = T2RB.getText().toString();
+                                teamtwo[1] = T2CL.getText().toString();
+                                teamtwo[2] = T2PK.getText().toString();
+                                teamthree[0] = T3RB.getText().toString();
+                                teamthree[1] = T3CL.getText().toString();
+                                teamthree[2] = T3PK.getText().toString();
+                                teamfour[0] = T4RB.getText().toString();
+                                teamfour[1] = T4CL.getText().toString();
+                                teamfour[2] = T4PK.getText().toString();
 
 
+                                teamstats.put("TeamNumber", team1s);
+                                teamstats.put("Beacon", teamone[0]);
+                                teamstats.put("ClimberAuto", teamone[1]);
+                                teamstats.put("ParkingAuto", teamone[2]);
+                                teamstats.saveEventually();
+                                teamstats2.put("TeamNumber", team2s);
+                                teamstats2.put("Beacon", teamtwo[0]);
+                                teamstats2.put("ClimberAuto", teamtwo[1]);
+                                teamstats2.put("ParkingAuto", teamtwo[2]);
+                                teamstats2.saveEventually();
+                                teamstats3.put("TeamNumber", team3s);
+                                teamstats3.put("Beacon", teamthree[0]);
+                                teamstats3.put("ClimberAuto", teamthree[1]);
+                                teamstats3.put("ParkingAuto", teamthree[2]);
+                                teamstats3.saveEventually();
+                                teamstats4.put("TeamNumber", team4s);
+                                teamstats4.put("Beacon", teamfour[0]);
+                                teamstats4.put("ClimberAuto", teamfour[1]);
+                                teamstats4.put("ParkingAuto", teamfour[2]);
+                                teamstats4.saveEventually();
 
 
-                               //setContentView(R.layout.activity_main4);
-
+                                setContentView(R.layout.teleop_input_layout);
+                              // Button telenext = (Button) findViewById(R.id/.)
 
                             }
                         });
+                    /*Button backpage = (Button) findViewById(R.id.back);
+                    backpage.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            setContentView(R.layout.second_page);
+
+                            confirm.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+
+                                    teamnumber1 = (EditText) findViewById(R.id.Team1AutoComplete);
+                                    teamnumber2 = (EditText) findViewById(R.id.Team2AutoComplete);
+                                    teamnumber3 = (EditText) findViewById(R.id.Team3AutoComplete);
+                                    teamnumber4 = (EditText) findViewById(R.id.Team4AutoComplete);
+                                    teamnumber1s = teamnumber1.getText().toString();
+
+
+                                    for (int i = 0; i < 4; i++) {
+                                        matchinfo.add("Teams", teams[i]);
+                                    }
+                                    // matchinfo.put("MatchNumber", "1");
+
+                                    matchinfo.saveInBackground();
+                                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Matchinformation");
+                                    query.whereEqualTo("MatchNumber", matchnumber.getText().toString());
+                                    query.findInBackground(new FindCallback<ParseObject>() {
+
+                                        public void done(List<ParseObject> l, ParseException e) {
+
+                                            if (e == null) {
+
+                                                Log.i("qqq", "this is running1");
+                                                Log.i("qqq", String.valueOf(l.size()));
+                                                for (int i = 0; i < l.size(); i++) {
+                                                    // use dealsObject.get('columnName') to access the properties of the Deals object.
+                                                    Log.i("qqq", "this is running2");
+                                                    matchteams = (l.get(i).getJSONArray("Teams"));
+                                                    test = matchteams.toString();
+
+                                                    secondarray = test.split(",");
+                                                    Log.i("qqq", "this is running3");
+                                                    for (int d = 0; d < 4; d++) {
+                                                        teams3[d] = secondarray[d].replaceAll("[^\\d.]", "");
+
+                                                    }
+                                                    Log.i("qqq", teams3[0]);
+                                                    teamnumber1.setText(teams[0]);
+                                                    teamnumber2.setText(teams[1]);
+                                                    teamnumber3.setText(teams[2]);
+                                                    teamnumber4.setText(teams[3]);
+                                                }
+
+                                            } else {
+                                                Log.d("Error", e.getMessage());
+                                            }
+
+                                        }
+                                    });
+
+
+                                }
+                            });
+
+                        }
+                    });
+*/
                     }
                 });
             }
